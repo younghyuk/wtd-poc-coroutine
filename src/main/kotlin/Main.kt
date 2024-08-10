@@ -28,10 +28,14 @@ fun main() = runBlocking {
 
     // Hand on #2. 에러 처리
     launch {
-        val user = api.loadUser()
-        val product = api.loadProduct()
-        val order = api.orderProduct(user, product)
-        println("order: $order")
+        try {
+            val user = api.loadUser()
+            val product = api.loadProduct()
+            val order = api.orderProduct(user, product)
+            println("order: $order")
+        } catch (th: Throwable) {
+            println("Error: $th")
+        }
     }
 
     println("finished")
