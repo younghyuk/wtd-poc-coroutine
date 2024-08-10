@@ -26,7 +26,11 @@ val api = ApiClient()
 fun main() = runBlocking {
     println("Started")
 
-    // TODO: practice coroutine
+    // Hand on #1-1. 순서대로 비동기 호출을 실행하기
+    val user = api.loadUser()
+    val product = api.loadProduct()
+    val order = api.orderProduct(user, product)
+    println("order: $order")
 
     println("finished")
 }
