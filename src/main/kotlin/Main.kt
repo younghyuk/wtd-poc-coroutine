@@ -1,6 +1,5 @@
 package com.ethan
 
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -13,18 +12,15 @@ class ApiClient {
         delay(1000)
         return User("ethan")
     }
-
     suspend fun loadProduct(): Product {
         delay(500)
         throw IllegalStateException("Network is not working")
     }
-
     suspend fun orderProduct(user: User, product: Product): String {
         delay(1000)
         return "${user.name} / ${product.name}";
     }
 }
-
 val api = ApiClient()
 
 fun main() = runBlocking {
