@@ -1,5 +1,6 @@
 package com.ethan
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -26,10 +27,10 @@ val api = ApiClient()
 fun main() = runBlocking {
     println("Started")
 
-    // Hand on #1-1. 순서대로 비동기 호출을 실행하기
-    val user = api.loadUser()
-    val product = api.loadProduct()
-    val order = api.orderProduct(user, product)
+    // Hand on #1-2. User와 Product를 동시에 불러오고 결과로 Product 주문하기
+    val user = async { api.loadUser() }
+    val product = async { api.loadProduct() }
+    val order = api.orderProduct(user.await(), product.await())
     println("order: $order")
 
     println("finished")
