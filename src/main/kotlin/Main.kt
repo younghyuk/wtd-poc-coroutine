@@ -21,7 +21,7 @@ class ApiClient {
 }
 val api = ApiClient()
 
-fun main() {
+fun main() = runBlocking {
     println("Started")
 
     // Hand on #2. 에러 처리
@@ -29,13 +29,13 @@ fun main() {
         println("Caught $exception")
     }
     val scope = CoroutineScope(Dispatchers.Default)
-    scope.launch(handler) {
+    val job = scope.launch(handler) {
         val user = api.loadUser()
         val product = api.loadProduct()
         val order = api.orderProduct(user, product)
         println("order: $order")
     }
+    job.join()
 
-    Thread.sleep(5000)
     println("finished")
 }
