@@ -1,8 +1,6 @@
 package com.ethan
 
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 data class User(val name: String)
 data class Product(val name: String)
@@ -23,20 +21,21 @@ class ApiClient {
 }
 val api = ApiClient()
 
-fun main() = runBlocking {
+fun main() {
     println("Started")
 
     // Hand on #2. 에러 처리
-    launch {
-        try {
-            val user = api.loadUser()
-            val product = api.loadProduct()
-            val order = api.orderProduct(user, product)
-            println("order: $order")
-        } catch (th: Throwable) {
-            println("Error: $th")
-        }
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("Caught $exception")
+    }
+    val scope = CoroutineScope(Dispatchers.Default)
+    scope.launch(handler) {
+        val user = api.loadUser()
+        val product = api.loadProduct()
+        val order = api.orderProduct(user, product)
+        println("order: $order")
     }
 
+    Thread.sleep(5000)
     println("finished")
 }
